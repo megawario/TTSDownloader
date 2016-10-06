@@ -9,12 +9,12 @@ http://berserk-games.com/tabletop-simulator/
 
 # Usage
 
-1 - Run in java
-2 - Select the Workshop or json file
-3 - give a name for the game
-4 - select dump folder
-5 - pick zip if required or dry run (will not download anything)
-6 - check if file was created
+1. Run in java
+2. Select the Workshop or json file
+3. give a name for the game
+4. select dump folder
+5. pick zip if required or dry run (will not download anything)
+6. check if file was created
 
 To install the mod, just copy the Mod folder and subfolders to the mods location on your machine.
 The cache on TTS will handle the rest.
