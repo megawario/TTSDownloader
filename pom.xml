@@ -22,6 +22,7 @@
             <configuration>
                 <archive>
                     <manifest>
+                        <addClasspath>true</addClasspath>
                         <mainClass>xyz.casualcookie.ttsdownloader.App</mainClass>
                     </manifest>
                 </archive>
