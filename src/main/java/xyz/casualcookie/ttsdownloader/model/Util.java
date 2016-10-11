@@ -3,6 +3,7 @@ package xyz.casualcookie.ttsdownloader.model;
 import java.io.*;
 
 /**
+ * Resources that are common on code.
  * Created by Mpinto on 04/10/2016.
  */
 public class Util {

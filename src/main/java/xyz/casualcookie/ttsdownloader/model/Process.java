@@ -7,10 +7,13 @@ import javafx.scene.control.TextArea;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
+ * Process to run to fetch the game
  * Created by Mpinto on 29/09/2016.
  */
 public class Process extends Task<Boolean>{
@@ -18,6 +21,7 @@ public class Process extends Task<Boolean>{
     private final ProgressBar progressBar;
     private final String gameFile,outputPath,gameName;
     private final boolean isDryRun,isZip;
+
 
     public Process(TextArea console,ProgressBar progressBar,String gameFile,String outputPath,String gameName,boolean isDryRun,boolean isZip){
         this.console = console;
@@ -32,10 +36,10 @@ public class Process extends Task<Boolean>{
 
     @Override
     protected Boolean call() throws Exception {
-        File file=null;
+        File file;
         FileInputStream fis=null;
-        String contentString=null;
-        byte[] content=null;
+        String contentString;
+        byte[] content;
         try {
             file = new File(gameFile);
             content = new byte[(int) file.length()];
@@ -60,17 +64,14 @@ public class Process extends Task<Boolean>{
 
         //create observer to notify the view
         Observer observer =
-                new Observer(){
-                    @Override
-                    public void update(Observable o, Object arg) {
-                        Resource resource = (Resource) arg;
-                        if(resource.getFetchStatus() == Resource.DownloadState.UNDEFINED){return;} //ignore start notifications
-                        if(resource.getFetchStatus() == Resource.DownloadState.SUCCESS){
-                            console.appendText("Successfully Download "+resource.getURL()+" to "+resource.getFileSavePath()+"\n");
-                        }
-                        else {console.appendText("Failed Download "+resource.getURL()+"\n");}
-                        progressBar.setProgress(progressBar.getProgress()+1.0/numberOfResources);
+                (o, arg) -> {
+                    Resource resource = (Resource) arg;
+                    if(resource.getFetchStatus() == Resource.DownloadState.UNDEFINED){return;} //ignore start notifications
+                    if(resource.getFetchStatus() == Resource.DownloadState.SUCCESS){
+                        console.appendText("Successfully Download "+resource.getURL()+" to "+resource.getFileSavePath()+"\n");
                     }
+                    else {console.appendText("Failed Download "+resource.getURL()+"\n");}
+                    progressBar.setProgress(progressBar.getProgress()+1.0/numberOfResources);
                 };
 
         //3 - setup zipper to zip on download
@@ -90,8 +91,11 @@ public class Process extends Task<Boolean>{
             zipper.compress(Resource.PATH_STRUCTURE_WORKSHOP + File.separatorChar+gameName + ".json",fis);
             zipper.close();
         }else{
-            Files.copy(fis,(new File(outputPath + File.separatorChar
-                    + gameName + File.separatorChar + Resource.PATH_STRUCTURE_WORKSHOP + File.separatorChar+gameName + ".json")).toPath());
+            File target = new File(outputPath + File.separatorChar
+                    + gameName + File.separatorChar + Resource.PATH_STRUCTURE_WORKSHOP + File.separatorChar + gameName + ".json");
+            //create folder if does not exist
+            if (target.getParentFile() != null) Files.createDirectories(target.getParentFile().toPath());
+            Files.copy(fis, target.toPath());
         }
 
         fis.close();

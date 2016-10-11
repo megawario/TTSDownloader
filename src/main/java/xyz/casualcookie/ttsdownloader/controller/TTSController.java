@@ -1,7 +1,10 @@
 package xyz.casualcookie.ttsdownloader.controller;
 
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import xyz.casualcookie.ttsdownloader.App;
@@ -15,6 +18,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
+ * Controller for fx view
  * Created by Mpinto on 11/09/2016.
  */
 public class TTSController implements Controller {
@@ -36,6 +40,10 @@ public class TTSController implements Controller {
     }
 
     @FXML protected void downloadButtonAction(ActionEvent event) throws IOException, InterruptedException {
+        if(!isActionEnabled){
+            console.appendText("Running previous action");
+            return;
+        }
         String gameName = this.gameName.getText();
         String gameFile = this.gameFile.getText();
         String outputPath = this.outputPath.getText();
@@ -49,6 +57,11 @@ public class TTSController implements Controller {
 
         //download files
         Task<Boolean> downloadFiles = new Process(console,progress,gameFile,outputPath,gameName,isDryRunCheckbox.isSelected(),isZipCheckbox.isSelected());
+        downloadFiles.setOnSucceeded((event1) -> {console.appendText("Process was successful\n");isActionEnabled=true;});
+        downloadFiles.setOnFailed(event1 -> {console.appendText("Process was unsuccessful\n");isActionEnabled=true;});
+        downloadFiles.setOnCancelled(event1 -> {console.appendText("Process was canceled\n");isActionEnabled=true;});
+
+        isActionEnabled=false;
         new Thread(downloadFiles).start();
     }
 

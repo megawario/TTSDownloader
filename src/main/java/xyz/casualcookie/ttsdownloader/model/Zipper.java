@@ -41,7 +41,7 @@ public class Zipper {
 
     /**
      * Compresses the File. It opens a inputStream based of the file.
-     * @param compressFile
+     * @param compressFile File to be compressed
      * @throws IOException
      */
     public void compress(File compressFile) throws IOException {
@@ -59,14 +59,14 @@ public class Zipper {
 
     /**
      * Given a directory and a output file, it will compress every subdirectory in the output file.
-     * @param GameDirectory
-     * @param outputFile
+     * @param GameDirectory directory to compress
+     * @param outputFile compressed file
      * @throws IOException
      */
     public static void compressDir(File GameDirectory,File outputFile) throws IOException {
         ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream( new FileOutputStream(outputFile)));
         List<File> subDirectories=new LinkedList<>(Arrays.asList(GameDirectory.listFiles()));
-        BufferedInputStream origin = null;
+        BufferedInputStream origin;
         while(!subDirectories.isEmpty()){
             File f = subDirectories.remove(0);
             if(f.isDirectory()){
@@ -79,5 +79,5 @@ public class Zipper {
             }
         }
         zos.close();
-    };
+    }
 }

@@ -60,7 +60,7 @@ public class Resource{
      */
     public String getFileName(){
        return fileName;
-    };
+    }
 
 
     public DownloadState getFetchStatus(){
@@ -75,7 +75,7 @@ public class Resource{
     }
 
     public String getStructurePath(){
-        String path = "";
+        String path;
         switch(type){
             case IMAGE: path = PATH_STRUCTURE_IMAGES; break;
             case OBJECT: path = PATH_STRUCTURE_OBJECTS;break;

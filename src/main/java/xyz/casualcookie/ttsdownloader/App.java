@@ -31,7 +31,7 @@ public class App extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader((App.class.getClassLoader().getResource("fxml/TTSDownloader.fxml")));
-        Parent root = (Parent) loader.load();
+        Parent root = loader.load();
         ((Controller) loader.getController()).setApplication(this);
 
         Scene scene = new Scene(root);

@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
+ * Test the parser
  * Created by Mpinto on 06/10/2016.
  */
 public class ParserTester {
@@ -20,10 +21,10 @@ public class ParserTester {
      */
     @Test
     public void parse() throws IOException {
-        File file=null;
-        FileInputStream fis=null;
-        String contentString=null;
-        byte[] content=null;
+        File file;
+        FileInputStream fis;
+        String contentString;
+        byte[] content;
 
         file = new File(getClass().getClassLoader().getResource("361202128.json").getFile());
         content = new byte[(int) file.length()];

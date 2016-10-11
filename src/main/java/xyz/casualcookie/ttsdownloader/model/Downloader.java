@@ -52,10 +52,8 @@ public class Downloader extends Observable {
      */
     public int download() throws InterruptedException, IOException {
         ExecutorService exec = Executors.newCachedThreadPool();
-        Iterator<Resource> iterator = resourcesSet.iterator();
 
-        while(iterator.hasNext()) {
-            Resource resource = iterator.next();
+        for (Resource resource : resourcesSet) {
             exec.execute(new Worker(resource));
         }
         exec.shutdown();
@@ -107,7 +105,7 @@ public class Downloader extends Observable {
 
         private final Resource resource;
 
-        public Worker(Resource resource) throws IOException {
+        protected Worker(Resource resource) throws IOException {
             this.resource = resource;
         }
 

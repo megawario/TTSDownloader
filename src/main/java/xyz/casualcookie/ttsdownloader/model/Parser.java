@@ -41,7 +41,7 @@ public class Parser {
         resourcesSet = new HashSet<>();
         objectMatcher = objectPattern.matcher(fileContent);
         imageMatcher = imagePattern.matcher(fileContent);
-    };
+    }
 
     /**
      * Parses the file, searching for a match in images and models.
