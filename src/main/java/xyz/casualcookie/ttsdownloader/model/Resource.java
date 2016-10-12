@@ -34,7 +34,7 @@ public class Resource{
     private DownloadState fetchStatus;
 
     /**
-     * The source URL usualy must be parsed in order to obtain the 2 required params.
+     * The source URL usually must be parsed in order to obtain the 2 required params.
      * @param sourceURL file URL from where everything else is constructed.
      * @param type Type of file if an Image or Object
      */

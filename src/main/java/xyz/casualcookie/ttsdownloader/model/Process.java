@@ -6,9 +6,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -37,13 +35,14 @@ public class Process extends Task<Boolean>{
     @Override
     protected Boolean call() throws Exception {
         File file;
-        FileInputStream fis=null;
+        BufferedInputStream fis=null;
         String contentString;
         byte[] content;
         try {
             file = new File(gameFile);
             content = new byte[(int) file.length()];
-            fis = new FileInputStream(file);
+            fis = new BufferedInputStream(new FileInputStream(file));
+            fis.mark(Integer.MAX_VALUE); //we will reuse this so keep on buffer
             fis.read(content);
             contentString = new String(content);
         }catch(FileNotFoundException e){
@@ -86,7 +85,10 @@ public class Process extends Task<Boolean>{
         Downloader downloader = new Downloader(gp.getResourcesSet(),isDryRun,zipper,observer);
         downloader.download();
 
+
         //5 - Save copy workshop file
+        //reset stream
+        fis.reset();
         if(zipper!=null){
             zipper.compress(Resource.PATH_STRUCTURE_WORKSHOP + File.separatorChar+gameName + ".json",fis);
             zipper.close();
@@ -95,7 +97,8 @@ public class Process extends Task<Boolean>{
                     + gameName + File.separatorChar + Resource.PATH_STRUCTURE_WORKSHOP + File.separatorChar + gameName + ".json");
             //create folder if does not exist
             if (target.getParentFile() != null) Files.createDirectories(target.getParentFile().toPath());
-            Files.copy(fis, target.toPath());
+            System.out.println("copy!");
+            Files.copy(fis,target.toPath(),StandardCopyOption.REPLACE_EXISTING);
         }
 
         fis.close();

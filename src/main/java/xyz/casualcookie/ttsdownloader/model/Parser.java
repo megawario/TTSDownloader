@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Install path is the path that appears in the description.
  *
  * Install path is concatenate to take advantage of cache system from Tabletop Simulator.
- * URL will be eliminated alltogether
+ * URL will be eliminated altogether
  *
  * Created by Mpinto on 09/09/2016.
  */

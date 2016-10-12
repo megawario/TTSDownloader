@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Downloads the resources from the web into a defined folder.
- * If threaded is needed must be instanciated.
+ * If threaded is needed must be instantiated.
  *
- * Because we are using the cache system of TTS, the name of the file is the installpath without the special characters.
+ * Because we are using the cache system of TTS, the name of the file is the install path without the special characters.
  *
  * Class has observable in order to notify the number of downloaded objects while downloading.
  * Created by Mpinto on 09/09/2016.
@@ -54,11 +54,10 @@ public class Downloader extends Observable {
         ExecutorService exec = Executors.newCachedThreadPool();
 
         for (Resource resource : resourcesSet) {
-            exec.execute(new Worker(resource));
+            exec.submit(new Worker(resource));
         }
         exec.shutdown();
         exec.awaitTermination(TIMEOUT_MINUTES, TimeUnit.MINUTES);
-
         return successes;
     }
 
